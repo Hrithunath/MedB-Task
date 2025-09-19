@@ -19,7 +19,6 @@ class HomeScreen extends StatelessWidget {
         if (state is LogoutLoadedState) {
          
 
-          // Navigate to LoginScreen and remove all previous routes
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) =>  LoginScreen()),

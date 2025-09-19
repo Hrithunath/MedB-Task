@@ -12,7 +12,10 @@ class MyDrawer extends StatelessWidget {
       builder: (context, state) {
         if (state is LoginLoadedState) {
           final user = state.user;
-          final menuData = state.menu; // menuData list
+          final menuData = state.menu;
+
+          final sortedModules = List.from(menuData)
+            ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
           return Drawer(
             backgroundColor: const Color(0xFFEAF4F4),
@@ -20,7 +23,8 @@ class MyDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 Container(
-                  padding: ResponsiveHelper.scalePadding(context, horizontal: 16, vertical: 16),
+                  padding: ResponsiveHelper.scalePadding(
+                      context, horizontal: 16, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -46,64 +50,94 @@ class MyDrawer extends StatelessWidget {
                       ),
                       SizedBox(height: ResponsiveHelper.scaleGap(context, 16)),
 
-                      // User info
                       ListTile(
                         leading: user.profilePicture != null
                             ? Image.network(
                                 user.profilePicture!,
                                 width: ResponsiveHelper.scaleWidth(context, 40),
-                                height: ResponsiveHelper.scaleHeight(context, 40),
+                                height:
+                                    ResponsiveHelper.scaleHeight(context, 40),
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.person);
-                                },
+                                errorBuilder: (_, __, ___) =>
+                                    const Icon(Icons.person),
                               )
-                            : Icon(Icons.person,
+                            : Icon(
+                                Icons.person,
                                 size: ResponsiveHelper.scaleWidth(context, 40),
-                                color: Colors.blue),
+                                color: Colors.blue,
+                              ),
                         title: Text(
-                          "${user.firstName}${user.middleName ?? ''}",
+                          "${user.firstName} ${user.middleName ?? ''} ${user.lastName ?? ''}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: ResponsiveHelper.getTextSize(context, scale: 0.045),
+                            fontSize: ResponsiveHelper.getTextSize(
+                              context,
+                              scale: 0.045,
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(height: ResponsiveHelper.scaleGap(context, 10)),
 
-                      // Dynamic menu
-                      ...menuData.map((module) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: ResponsiveHelper.scaleGap(context, 5)),
-                            ...module.menus.map((menu) {
-                              return ListTile(
-                                leading: menu.menuIcon != null
-                                    ? Image.network(
-                                        menu.menuIcon!,
-                                        width: ResponsiveHelper.scaleWidth(context, 30),
-                                        height: ResponsiveHelper.scaleHeight(context, 30),
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return const Icon(Icons.broken_image);
-                                        },
-                                      )
-                                    : null,
-                                title: Text(
-                                  menu.menuName,
-                                  style: TextStyle(
-                                    fontSize: ResponsiveHelper.getTextSize(context, scale: 0.04),
+                      // ---- Dynamic Modules ----
+                      ...sortedModules.map((module) {
+                        // Sort menus
+                        final sortedMenus = List.from(module.menus)
+                          ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+                        return ExpansionTile(
+                          leading: module.moduleIcon != null
+                              ? Image.network(
+                                  module.moduleIcon!,
+                                  width: ResponsiveHelper.scaleWidth(context, 24),
+                                  height: ResponsiveHelper.scaleHeight(context, 24),
+                                  errorBuilder: (_, __, ___) =>
+                                      const Icon(Icons.broken_image),
+                                )
+                              : const Icon(Icons.folder),
+                          title: Text(
+                            module.moduleName == "Patient"
+                                ? "${user.firstName} ${user.middleName ?? ''} ${user.lastName ?? ''}"
+                                : module.moduleName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ResponsiveHelper.getTextSize(
+                                context,
+                                scale: 0.043,
+                              ),
+                            ),
+                          ),
+                          children: sortedMenus.map<Widget>((menu) {
+                            return ListTile(
+                              leading: menu.menuIcon != null
+                                  ? Image.network(
+                                      menu.menuIcon!,
+                                      width: ResponsiveHelper.scaleWidth(context, 28),
+                                      height:
+                                          ResponsiveHelper.scaleHeight(context, 28),
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) =>
+                                          const Icon(Icons.broken_image),
+                                    )
+                                  : const Icon(Icons.circle),
+                              title: Text(
+                                menu.menuName,
+                                style: TextStyle(
+                                  fontSize: ResponsiveHelper.getTextSize(
+                                    context,
+                                    scale: 0.04,
                                   ),
                                 ),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, menu.menuName);
-                                },
-                              );
-                            }),
-                            SizedBox(height: ResponsiveHelper.scaleGap(context, 10)),
-                          ],
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Future.microtask(() {
+                                  Navigator.pushNamed(
+                                      context, "/${menu.controllerName}");
+                                });
+                              },
+                            );
+                          }).toList(),
                         );
                       }).toList(),
                     ],

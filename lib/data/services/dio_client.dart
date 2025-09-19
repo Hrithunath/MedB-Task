@@ -23,7 +23,7 @@ class DioClient {
     _dio.options = BaseOptions(
       baseUrl: "https://testapi.medb.co.in/api/",
       connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 90),
     );
 
     _dio.interceptors.add(
@@ -60,7 +60,7 @@ class DioClient {
       final response = await _dio.post(
         "auth/refresh-token",
         options: Options(extra: {"withCredentials": true}),
-        data: {"refreshToken": refreshToken}, // send refreshToken
+        data: {"refreshToken": refreshToken}, 
       );
 
       final newAccessToken = response.data["accessToken"];

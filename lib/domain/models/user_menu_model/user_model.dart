@@ -43,7 +43,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      userId: int.parse(json['userId'].toString()),   // ✅ always safe
+      userId: int.parse(json['userId'].toString()),   
       clinicId: json['clinicId'] != null ? int.tryParse(json['clinicId'].toString()) : null,
       doctorId: json['doctorId'] != null ? int.tryParse(json['doctorId'].toString()) : null,
       doctorClinics: (json['doctorClinics'] as List?)

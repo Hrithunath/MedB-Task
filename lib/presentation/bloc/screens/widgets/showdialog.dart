@@ -42,7 +42,7 @@ Future<dynamic> showDialogBox({
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple, // violet color
+                  backgroundColor: Colors.deepPurple, 
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -57,7 +57,7 @@ Future<dynamic> showDialogBox({
               const SizedBox(width: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // red color
+                  backgroundColor: Colors.red, 
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

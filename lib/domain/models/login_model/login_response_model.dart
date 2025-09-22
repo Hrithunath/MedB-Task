@@ -3,14 +3,12 @@ import 'package:med_b/domain/models/user_menu_model/user_model.dart';
 
 class LoginResponse {
   final String accessToken;
-  final String? refreshToken; 
   final String loginKey;
   final UserModel userDetails; 
   final List<ModuleModel> menuData; 
 
   LoginResponse({
     required this.accessToken,
-    this.refreshToken, 
     required this.loginKey,
     required this.userDetails,
     required this.menuData,
@@ -19,7 +17,6 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       accessToken: json['accessToken'] ?? '',
-      refreshToken: json['refreshToken'], 
       loginKey: json['loginKey'] ?? '',
       userDetails: UserModel.fromJson(json['userDetails'] ?? {}),
       menuData: (json['menuData'] as List? ?? [])

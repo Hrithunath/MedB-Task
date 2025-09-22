@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:med_b/presentation/bloc/bloc/auth_bloc.dart';
-import 'package:med_b/presentation/bloc/screens/home_screen.dart';
-import 'package:med_b/presentation/bloc/screens/login_screen.dart';
 import 'package:med_b/presentation/bloc/screens/splash_screen.dart';
 
 void main() {

@@ -36,13 +36,11 @@ class DioClient {
           return handler.next(options);
         },
         onError: (error, handler) async {
-          final isLogin = error.requestOptions.extra["isLogin"] == true;
-          if (error.response?.statusCode == 401 && !isLogin) {
-            final refreshed = await _refreshToken();
-            if (refreshed) {
-              final retryRequest = await _dio.fetch(error.requestOptions);
-              return handler.resolve(retryRequest);
-            }
+         
+          if (error.response?.statusCode == 401) {
+              await SecureStorageService.clearAll();
+    await cookieJar.deleteAll();
+       log("401 Unauthorized - Cleared access tokens and cookies.");
           }
           return handler.next(error);
         },
@@ -52,26 +50,5 @@ class DioClient {
 
   Dio get dio => _dio;
 
-  Future<bool> _refreshToken() async {
-    try {
-      final refreshToken = await SecureStorageService.getRefreshToken();
-      if (refreshToken == null) return false;
-
-      final response = await _dio.post(
-        "auth/refresh-token",
-        options: Options(extra: {"withCredentials": true}),
-        data: {"refreshToken": refreshToken}, 
-      );
-
-      final newAccessToken = response.data["accessToken"];
-      if (newAccessToken != null) {
-        await SecureStorageService.saveAccessToken(newAccessToken);
-        return true;
-      }
-      return false;
-    } catch (e) {
-      log("Refresh token failed: $e");
-      return false;
-    }
-  }
+ 
 }

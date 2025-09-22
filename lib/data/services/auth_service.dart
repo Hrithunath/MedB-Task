@@ -74,7 +74,7 @@ Future<LoginResponse> login({required LoginRequest loginRequest}) async {
     final response = await _dioClient.dio.post(
       "auth/login",
       data: loginRequest.toJson(),
-      options: Options(extra: {"withCredentials": true, "isLogin": true}),
+      options: Options(extra: {"withCredentials": true}),
     );
 
     // Debug prints
@@ -83,15 +83,13 @@ Future<LoginResponse> login({required LoginRequest loginRequest}) async {
 
     if (response.statusCode == 200 && response.data != null) {
       final accessToken = response.data["accessToken"];
-      final refreshToken = response.data["refreshToken"];
+    //  final refreshToken = response.data["refreshToken"];
       final userDetails = response.data["userDetails"];
       final menuData = response.data["menuData"];
 
       if (accessToken != null) {
         await SecureStorageService.saveAccessToken(accessToken);
-        if (refreshToken != null) {
-          await SecureStorageService.saveRefreshToken(refreshToken);
-        }
+       
         if (userDetails != null) {
           await SecureStorageService.saveUserDetails(UserModel.fromJson(userDetails));
         }

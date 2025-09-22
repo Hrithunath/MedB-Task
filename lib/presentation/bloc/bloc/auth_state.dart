@@ -19,7 +19,6 @@ class LoginLoadedState extends AuthState {
   LoginLoadedState({required this.user, required this.menu});
 }
 
-// For Logout success
 class LogoutLoadedState extends AuthState {
   final String message;
   LogoutLoadedState({required this.message});

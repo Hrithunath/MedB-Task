@@ -7,7 +7,6 @@ class SecureStorageService {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static const String _accessTokenKey = 'access_token';
-  static const String _refreshTokenKey = 'refresh_token';
   static const String _loginKeyKey = 'login_key';
   static const String _userDetailsKey = 'user_details';
   static const String _menuDataKey = 'menu_data';
@@ -23,19 +22,6 @@ class SecureStorageService {
 
   static Future<void> deleteAccessToken() async {
     await _storage.delete(key: _accessTokenKey);
-  }
-
-  // ---------------- REFRESH TOKEN ----------------
-  static Future<void> saveRefreshToken(String token) async {
-    await _storage.write(key: _refreshTokenKey, value: token);
-  }
-
-  static Future<String?> getRefreshToken() async {
-    return _storage.read(key: _refreshTokenKey);
-  }
-
-  static Future<void> deleteRefreshToken() async {
-    await _storage.delete(key: _refreshTokenKey);
   }
 
   // ---------------- LOGIN KEY ----------------

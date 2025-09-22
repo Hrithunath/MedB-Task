@@ -67,7 +67,7 @@ class MyDrawer extends StatelessWidget {
                                 color: Colors.blue,
                               ),
                         title: Text(
-                          "${user.firstName} ${user.middleName ?? ''} ${user.lastName ?? ''}",
+                          "${user.firstName} ${user.middleName ?? ''} ${user.lastName}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ResponsiveHelper.getTextSize(
@@ -97,7 +97,7 @@ class MyDrawer extends StatelessWidget {
                               : const Icon(Icons.folder),
                           title: Text(
                             module.moduleName == "Patient"
-                                ? "${user.firstName} ${user.middleName ?? ''} ${user.lastName ?? ''}"
+                                ? "${user.firstName} ${user.middleName ?? ''} ${user.lastName}"
                                 : module.moduleName,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class MyDrawer extends StatelessWidget {
                             );
                           }).toList(),
                         );
-                      }).toList(),
+                      })
                     ],
                   ),
                 ),
